@@ -13,7 +13,11 @@ if (!empty($email) && !empty($password)) {
     $user_login = $user->mightyLogin();
     
     if($user_login){
-        session_start();
+        #session_start();
+        if(!isset($_SESSION)) 
+        { 
+            session_start(); 
+        }
         $_SESSION['mb_user'] = $email;
         header("Location:index.php");
         die;
