@@ -14,7 +14,7 @@
         'is_popular'    => isset($_POST) && isset($_POST['is_popular']) ? $_POST['is_popular'] : null,
         'is_featured'   => isset($_POST) && isset($_POST['is_featured']) ? $_POST['is_featured'] : null,
         'category_id'   => isset($_POST) && isset($_POST['category_id']) ? $_POST['category_id'] : null,
-        'order_by'      => isset($_POST) && isset($_POST['order_by']) ? $_POST['order_by'] : $order_by,
+        'order_by'      => isset($_POST) && isset($_POST['order_by']) ? $_POST['order_by'] : $orderby,
         'order'         => isset($_POST) && isset($_POST['order']) ? $_POST['order'] : $order,
         'category_ids'  => isset($_POST) && isset($_POST['category_ids']) ? json_decode($_POST['category_ids']) : [],
         'page'          => isset($_POST) && isset($_POST['page']) ? $_POST['page'] : 1,
