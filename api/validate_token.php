@@ -1,13 +1,13 @@
 <?php
 // required headers
-header("Access-Control-Allow-Origin: http://localhost/ibook-cambodia/api/");
+header("Access-Control-Allow-Origin: http://localhost/ibook-cambodia-2/api/");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
 // required to decode jwt
-include_once '../config/core.php';
+include_once '../configuration/core.php';
 include_once '../libs/php-jwt-master/src/BeforeValidException.php';
 include_once '../libs/php-jwt-master/src/ExpiredException.php';
 include_once '../libs/php-jwt-master/src/SignatureInvalidException.php';
