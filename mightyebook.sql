@@ -101,3 +101,29 @@ CREATE TABLE `users` (
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`email`,`password`,`first_name`,`last_name`,`user_type`, `profile_image`) values (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3','Admin','Admin', 'admin',NULL);
+
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `payment_status` enum('pending','paid') COLLATE utf8_bin DEFAULT NULL,
+  `paid_document` varchar(300) COLLATE utf8_bin DEFAULT NULL,
+  `create_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+DROP TABLE IF EXISTS `order_items`;
+CREATE TABLE IF NOT EXISTS `order_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `book_id` int(11) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `create_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+COMMIT;
+
