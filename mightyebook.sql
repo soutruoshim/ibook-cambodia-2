@@ -106,26 +106,16 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `payment_status` enum('pending','paid') COLLATE utf8_bin DEFAULT NULL,
-  `paid_document` varchar(300) COLLATE utf8_bin DEFAULT NULL,
-  `create_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_dt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
-DROP TABLE IF EXISTS `order_items`;
-CREATE TABLE IF NOT EXISTS `order_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) DEFAULT NULL,
   `book_id` int(11) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `payment_status` enum('pending','paid') COLLATE utf8_bin DEFAULT NULL,
+  `paid_document` text COLLATE utf8_bin,
+  `status` enum('pending','confirm','cancel') COLLATE utf8_bin NOT NULL DEFAULT 'pending',
   `create_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_dt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 COMMIT;
 
-ALTER TABLE `book` ADD `price` DECIMAL(10,2) NULL AFTER `author_id`;
 

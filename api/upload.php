@@ -41,11 +41,6 @@ if(isset($_FILES['avatar']))
             );
         }
     }
-
-
-
-    
-
 }else{
     $response = array(
         "status" => "error",
