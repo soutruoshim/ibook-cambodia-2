@@ -15,9 +15,9 @@
            <div class="card card-block card-stretch card-height">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title mb-0">Book List</h4>
+                        <h4 class="card-title mb-0">Confirmed Order List</h4>
                     </div>
-                    <a href="?page=book_create" class="btn btn-primary">Add New</a>
+                    <!-- <a href="?page=book_create" class="btn btn-primary">Add New</a> -->
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
