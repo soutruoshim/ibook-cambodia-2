@@ -62,6 +62,7 @@
                 <?php
                     if (isset($_GET['page']))
                     {
+                       
                         $action = $_GET['page'];
                         $url = explode("_", $action);
                         $page_link = "";
@@ -76,6 +77,8 @@
                         } else {
                             $page_link .= '.php';
                         }
+
+                        //echo $page_link;
 
                         try {
                             if (!file_exists($page_link)){
@@ -170,6 +173,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                
                                 <div class="col-lg-3 col-md-6">
                                     <div class="card card-block card-stretch card-height">
                                         <div class="card-body">
