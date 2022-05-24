@@ -1,13 +1,20 @@
 <?php
-    require_once('../configuration/Connection.php');
-    require_once('../model/Book.php');
+    // get database connection
+    include_once '../configuration/DatabaseApi.php';
+    // instantiate order object
+    include_once '../model/Order.php';
 
-    $book = new Book();
-    $records = $book->mightyGetRecord();
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $book->setFields($_POST);
-        $book->mightyDelete();
-    }
+    $database = new DatabaseApi();
+    $db = $database->getConnection();
+    
+    // initialize object
+    $order = new Order($db);
+    
+    // read Orders will be here
+    // query Orders
+    $stmt = $order->readDetail('pending');
+   
+    $num = $stmt->rowCount();
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -24,35 +31,33 @@
                         <table id="" class="table data-table table-bordered">
                             <thead>
                                 <tr>
-                                    <th data-orderable="false">Logo</th>
-                                    <th>Name</th>
+                                    <th data-orderable="false">Book</th>
+                                    <th>Book Conver</th>
                                     <th>Price</th>
-                                    <th>Category</th>
-                                    <th>Author Name</th>
-                                    <th>URL</th>
-                                    <th data-orderable="false">Popular</th>
-                                    <th data-orderable="false">Featured</th>
+                                    <th>Amount</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
                                     <th data-orderable="false">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
-                                    if(count($records) > 0){
-                                        foreach( $records as $data ){
+                                    if($num > 0){
+                                        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)){
                                         ?>
                                             <tr>
+                                                <td><?= $data['book_name'] ?></td>
                                                 <td>
                                                     <div class="mm-avatar col-md-2">
-                                                        <img class="avatar-40 rounded" src="../upload/book/<?= $data['logo'] ?>" alt="#img" data-original-title="" title="">
+                                                        <img class="avatar-40 rounded" src="../upload/book/<?= $data['book_logo'] ?>" alt="#img" data-original-title="" title="">
                                                     </div>    
-                                                </td> 
-                                                <td><?= $data['name'] ?></td>
+                                                </td>
                                                 <td><?= $data['price'] ?></td>
-                                                <td><?= $data['category_name'] ?></td>
-                                                <td><?= $data['author_name'] ?></td>
-                                                <td><?= $data['type'] == 'pdf' ? $data['url'] : $data['file'] ?></td>
-                                                <td><?= ($data['is_popular'] == 1) ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' ?></td>
-                                                <td><?= ($data['is_featured'] == 1) ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' ?></td>
+                                                <td><?= $data['amount'] ?></td>
+                                                <td><?= $data['first_name'].' '.$data['last_name'] ?></td>
+                                                <td><span class="badge badge-warning">Pending</span></td>
+                                                <td><?= $data['create_dt'] ?></td>
                                                 <td>
                                                 <div class="d-flex align-items-center list-action">
                                                         <a class="badge bg-secondary-light mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send Notification" href="?page=onesignal_send&book_id=<?= $data['id'] ?>" ><i class="las la-bell"></i></a>

@@ -1,6 +1,6 @@
 <?php
 // used to get mysql database connection
-class Database{
+class DatabaseApi{
  
     // specify your own database credentials
     private $host = "localhost";

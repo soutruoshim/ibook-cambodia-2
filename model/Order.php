@@ -38,6 +38,44 @@ class Order{
     
         return $stmt;
     }
+
+    // read detail 
+    function readDetail($status){
+    
+        // select all query
+        $query = "SELECT
+                    o.id as id, 
+                    o.price as price, 
+                    o.amount as amount, 
+                    o.payment_status as payment_status, 
+                    o.status as status, 
+                    o.paid_document as 	paid_document, 
+                    o.create_dt as create_dt, 
+                    b.name as book_name,
+                    b.logo as book_logo,
+                    u.first_name as first_name,
+                    u.last_name as last_name
+                FROM
+                    " . $this->table_name . " o
+                    LEFT JOIN
+                         book b
+                            ON b.id = o.book_id
+                    LEFT JOIN
+                         users u
+                        ON u.id = o.user_id
+                WHERE o.status = '$status'        
+                ORDER BY
+                    o.create_dt DESC";
+        //echo $query;            
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
     // create order
     function create(){
     

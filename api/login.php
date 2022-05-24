@@ -11,7 +11,7 @@ include_once '../configuration/DatabaseApi.php';
 include_once '../model/UserApi.php';
  
 // get database connection
-$database = new Database();
+$database = new DatabaseApi();
 $db = $database->getConnection();
  
 // instantiate user object

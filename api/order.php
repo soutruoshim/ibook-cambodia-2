@@ -11,7 +11,7 @@ include_once '../configuration/DatabaseApi.php';
 // instantiate order object
 include_once '../model/Order.php';
   
-$database = new Database();
+$database = new DatabaseApi();
 $db = $database->getConnection();
   
 $order = new Order($db);
