@@ -26,6 +26,7 @@
                                 <tr>
                                     <th data-orderable="false">Logo</th>
                                     <th>Name</th>
+                                    <th>Price</th>
                                     <th>Category</th>
                                     <th>Author Name</th>
                                     <th>URL</th>
@@ -46,6 +47,7 @@
                                                     </div>    
                                                 </td> 
                                                 <td><?= $data['name'] ?></td>
+                                                <td><?= $data['price'] ?></td>
                                                 <td><?= $data['category_name'] ?></td>
                                                 <td><?= $data['author_name'] ?></td>
                                                 <td><?= $data['type'] == 'pdf' ? $data['url'] : $data['file'] ?></td>
