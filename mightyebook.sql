@@ -127,3 +127,5 @@ CREATE TABLE IF NOT EXISTS `order_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 COMMIT;
 
+ALTER TABLE `book` ADD `price` DECIMAL(10,2) NULL AFTER `author_id`;
+

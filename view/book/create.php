@@ -63,6 +63,11 @@
                                         <?php } ?>
                                     </select>
                                 </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="price" id="price" value ="<?= isset($row) && isset($row['price'])  ? $row['price'] : '' ?>" placeholder="Enter Price" required>
+                                </div>
                                 
                                 <div class="form-group col-md-4">
                                     <label for="type">Type </label>
@@ -75,7 +80,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-6 file_upload">
+                                <div class="form-group col-md-4 file_upload">
                                     <label for="file" class="form-label">Upload PDF</label>
                                     <div class="custom-file mb-3">
                                         <input type="file" class="custom-file-input" id="customFile" accept="application/pdf" name="file">
@@ -83,7 +88,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-6 file_url">
+                                <div class="form-group col-md-4 file_url">
                                     <label for="url" class="form-label">URL </label>
                                     <input type="url" class="form-control" name="url" id="url" value ="<?= isset($row) && isset($row['url']) ? $row['url'] : '' ?>" placeholder="Enter URL">
                                 </div>

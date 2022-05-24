@@ -13,6 +13,7 @@ Class Book extends Database
     private $id;
     private $name;
     private $author_id;
+    private $price;
     private $type;
     private $file;
     private $category_id;
@@ -26,6 +27,7 @@ Class Book extends Database
     {
         $this->id           = isset($field_array['id']) ? $field_array['id'] : null;
         $this->name         = isset($field_array['name']) ? $field_array['name'] : null;
+        $this->price        = isset($field_array['price']) ? $field_array['price'] : null;
         $this->author_id    = isset($field_array['author_id']) ? $field_array['author_id'] : null;
         $this->type         = isset($field_array['type']) ? $field_array['type'] : null;
         $this->category_id  = isset($field_array['category_id']) ? $field_array['category_id'] : null;
@@ -178,7 +180,7 @@ Class Book extends Database
         }
         if( $this->id == null )
         {
-            $record = "INSERT INTO $this->table VALUES(NULL,'".$this->name."','".$this->category_id."','".$this->author_id."', '".$this->type."', '".$pdf_file."' ,'".$image."','". $description."', '".$this->url."','".$this->is_popular."', '".$this->is_featured."', '".$this->created_at."' )";
+            $record = "INSERT INTO $this->table VALUES(NULL,'".$this->name."','".$this->category_id."','".$this->author_id."','".$this->price."', '".$this->type."', '".$pdf_file."' ,'".$image."','". $description."', '".$this->url."','".$this->is_popular."', '".$this->is_featured."', '".$this->created_at."' )";
             $message = "Book has been saved successfully";
         } else {
             
@@ -191,7 +193,7 @@ Class Book extends Database
             {
                 $pdf_file = $result['file'];
             }
-            $record = "UPDATE $this->table SET `name` = '$this->name', `author_id` = '$this->author_id', `type` = '$this->type',  `file` = '$pdf_file', `category_id` = '$this->category_id', `url` = '$this->url', `logo` = '$image' , `description` = '$description', `is_popular` = '$this->is_popular',  `is_featured` = '$this->is_featured' WHERE `id` = '".$this->id."' ";
+            $record = "UPDATE $this->table SET `name` = '$this->name', `author_id` = '$this->author_id',`price` = '$this->price', `type` = '$this->type',  `file` = '$pdf_file', `category_id` = '$this->category_id', `url` = '$this->url', `logo` = '$image' , `description` = '$description', `is_popular` = '$this->is_popular',  `is_featured` = '$this->is_featured' WHERE `id` = '".$this->id."' ";
             $message = "Book has been updated successfully";
         }
         try {
