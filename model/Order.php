@@ -13,6 +13,7 @@ class Order{
     public $amount;
     public $payment_status;
     public $paid_document;
+    public $status;
     public $create_dt;
   
     // constructor with $db as database connection
@@ -126,6 +127,7 @@ class Order{
                     id = ?
                 LIMIT
                     0,1";
+
     
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
@@ -140,6 +142,7 @@ class Order{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
         // set values to object properties
+       
 
         $this->user_id= $row['user_id'];
         $this->book_id= $row['book_id'];
@@ -148,6 +151,50 @@ class Order{
         $this->payment_status= $row['payment_status'];
         $this->paid_document= $row['paid_document'];
         $this->create_dt= $row['create_dt'];
+       
+    }
+
+    // used when filling up the update order form
+    function readOneDetail(){
+
+        // query to read single record
+        $query = "SELECT
+                    o.id as id, 
+                    o.price as price, 
+                    o.amount as amount, 
+                    o.payment_status as payment_status, 
+                    o.status as status, 
+                    o.paid_document as 	paid_document, 
+                    o.create_dt as create_dt, 
+                    b.name as book_name,
+                    b.logo as book_logo,
+                    u.first_name as first_name,
+                    u.last_name as last_name
+                FROM
+                    " . $this->table_name . " o
+                    LEFT JOIN
+                        book b
+                            ON b.id = o.book_id
+                    LEFT JOIN
+                        users u
+                        ON u.id = o.user_id
+                    WHERE
+                        o.id = ?
+                    LIMIT
+                        0,1";      
+        // prepare query statement
+        $stmt = $this->conn->prepare( $query );
+    
+        // bind id of order to be updated
+        $stmt->bindParam(1, $this->id);
+    
+        // execute query
+        $stmt->execute();
+    
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row;
+        
     }
     // update the order
     function update(){
@@ -190,6 +237,36 @@ class Order{
         if($stmt->execute()){
             return true;
         }
+    
+        return false;
+    }
+
+    function updateStatus(){
+    
+        // update query
+        $query = "UPDATE
+                    " . $this->table_name . "
+                SET
+                    status = :status
+                WHERE
+                    id = :id";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+        $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->id=htmlspecialchars(strip_tags($this->id));
+    
+        // bind new values
+        $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':id', $this->id);
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+
+        //echo $query;
     
         return false;
     }

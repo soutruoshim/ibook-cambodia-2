@@ -1,25 +1,25 @@
 <?php
-    require_once('../configuration/Connection.php');
-    require_once('../model/Book.php');
-    require_once('../model/Category.php');
-    require_once('../model/Author.php');
+    // get database connection
+    include_once '../configuration/DatabaseApi.php';
+    // instantiate order object
+    include_once '../model/Order.php';
 
-    $book = new Book();
-    
+    $database = new DatabaseApi();
+    $db = $database->getConnection();
+
+    // initialize object
+    $order = new Order($db);
+
     $id = isset($_GET) && isset($_GET['id']) ? $_GET['id'] : null;
-    $row = $book->mightyGetByID($id);
+    $order->id = $id;
+    $row = $order->readOneDetail();
+    
+    //var_dump($row);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $book->setFields($_POST, $_FILES);
-        $book->mightySave();
+        $order->status = $_POST['status'];
+        $order->updateStatus();
     }
-    $category = new Category();
-    $category_list = $category->mightyGetRecord();
-    $type_list = [
-        'pdf' => 'PDF (URL)',
-        'file' => 'Upload PDF File'
-    ];
-    $author = new Author();
-    $author_list = $author->mightyGetRecord();
+
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -27,7 +27,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title"><?= isset($id) ? 'Edit' : 'Add' ?> Book</h4>
+                        <h4 class="card-title"><?= isset($id) ? 'Edit' : 'Add' ?> Order</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -36,98 +36,43 @@
                             <input type="hidden" name="id" value="<?= $id ?>" />
                             <div class="row">
                                 <div class="form-group col-md-4">
-                                    <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="name" id="name" value ="<?= isset($row) && isset($row['name'])  ? $row['name'] : '' ?>" placeholder="Enter Name" required>
+                                    <label for="name" class="form-label">Book title <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="book_name" id="book_name" value ="<?= isset($row) && isset($row['book_name'])  ? $row['book_name'] : '' ?>" placeholder="Book title" disabled>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="name" class="form-label">Price <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="price" id="price" value ="<?= isset($row) && isset($row['price'])  ? $row['price'] : '' ?>" placeholder="Price" disabled>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="name" class="form-label">Amount <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="amount" id="amount" value ="<?= isset($row) && isset($row['amount'])  ? $row['amount'] : '' ?>" placeholder="Amount" disabled>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="name" class="form-label">Customer <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="customer" id="customer" value ="<?= isset($row) && isset($row['first_name'])  ? $row['first_name'].' '. $row['last_name'] : '' ?>" placeholder="Book title" disabled>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="name" class="form-label">Booking Date <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="booking_date" id="booking_date" value ="<?= isset($row) && isset($row['create_dt'])  ? $row['create_dt'] : '' ?>" placeholder="Book title" disabled>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label for="category_id">Category <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="category_id" required>
-                                        <option value=""> Select Category</option>
-                                        <?php
-                                            foreach ($category_list as $k => $val) {
-                                        ?>
-                                            <option value="<?= $val['id'] ?>" <?php if(isset($row) && isset($row['category_id']) && ($val['id'] == $row['category_id'])) echo "selected" ?> > <?= $val['name'] ?></option>
-                                        <?php } ?>
+                                    <select class="form-control" name="status" required>
+                                        <option value="">Status</option>
+                                        <option value="pending" <?php if(isset($row) && isset($row['status']) && ($row['status'] == 'pending')) echo "selected" ?> > Pending</option>
+                                        <option value="confirm" <?php if(isset($row) && isset($row['status']) && ($row['status'] == 'confirm')) echo "selected" ?> > Confirm</option>
                                     </select>
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    <label for="author_id">Author <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="author_id" required>
-                                        <option value=""> Select Author</option>
-                                        <?php
-                                            foreach ($author_list as $k => $val) {
-                                        ?>
-                                            <option value="<?= $val['id'] ?>" <?php if(isset($row) && isset($row['author_id']) && ($val['id'] == $row['author_id'])) echo "selected" ?> > <?= $val['name'] ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="price" id="price" value ="<?= isset($row) && isset($row['price'])  ? $row['price'] : '' ?>" placeholder="Enter Price" required>
-                                </div>
-                                
-                                <div class="form-group col-md-4">
-                                    <label for="type">Type </label>
-                                    <select class="form-control upload_type" name="type">
-                                        <?php
-                                            foreach ($type_list as $k => $val) {
-                                        ?>
-                                            <option value="<?= $k ?>" <?php if(isset($row) && isset($row['type']) && ($k == $row['type'])) echo "selected" ?> > <?= $val ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-4 file_upload">
-                                    <label for="file" class="form-label">Upload PDF</label>
-                                    <div class="custom-file mb-3">
-                                        <input type="file" class="custom-file-input" id="customFile" accept="application/pdf" name="file">
-                                        <label class="custom-file-label" for="customFile"><?= isset($row) && isset($row['file']) ? $row['file'] : 'Choose pdf file' ?></label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-4 file_url">
-                                    <label for="url" class="form-label">URL </label>
-                                    <input type="url" class="form-control" name="url" id="url" value ="<?= isset($row) && isset($row['url']) ? $row['url'] : '' ?>" placeholder="Enter URL">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label for="image" class="form-label">Image</label>
-                                    <div class="custom-file mb-3">
-                                        <input type="file" class="custom-file-input" id="customFile" accept="image/*" name="logo">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
-                                </div>
-                                
                                 <?php
-                                    $logo = isset($row) && isset($row['logo']) ? $row['logo'] : 'default.png';
-                                    $path = '../upload/book/';
+                                    $logo = isset($row) && isset($row['paid_document']) ? $row['paid_document'] : 'default.png';
+                                    $path = '../upload/';
                                 ?>
                                 <div class="form-group col-md-4 mt-3">
-                                    <div class="mm-avatar">
-                                        <img class="avatar-60 rounded logo_preview" src="<?= $path.$logo ?>" alt="#" data-original-title="" title="">
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="description" name="description" placeholder="Enter Description" rows="3" ><?= isset($row) && isset($row['description'])  ? $row['description'] : '' ?></textarea>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Is Popular? </label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="is_popular" id="is_popular" <?= (isset($row) && isset($row['is_popular']) && $row['is_popular'] == 1 ) || ( $id == null ) ? 'checked' : '' ?>>
-                                        <label class="custom-control-label" for="is_popular"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Is Featured? </label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="is_featured" id="is_featured" <?= (isset($row) && isset($row['is_featured']) && $row['is_featured'] == 1 ) || ( $id == null ) ? 'checked' : '' ?>>
-                                        <label class="custom-control-label" for="is_featured"></label>
+                                    <div class="">
+                                        <img class="rounded logo_preview" src="<?= $logo ?>" alt="#" data-original-title="" title="" width="150" height="200">
                                     </div>
                                 </div>
                             </div>

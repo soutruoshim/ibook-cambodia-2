@@ -60,9 +60,9 @@
                                                 <td><?= $data['create_dt'] ?></td>
                                                 <td>
                                                 <div class="d-flex align-items-center list-action">
-                                                        <a class="badge bg-secondary-light mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send Notification" href="?page=onesignal_send&book_id=<?= $data['id'] ?>" ><i class="las la-bell"></i></a>
-                                                        <a class="badge bg-primary-light mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="?page=book_create&id=<?= $data['id'] ?>" ><i class="las la-edit"></i></a>
-                                                        <a class="badge bg-danger-light mr-2" data-toggle="modal" data-target="#exampleModal<?= $data['id'] ?>" data-placement="top" title="" data-original-title="Delete" href="#"><i class="las la-trash-alt"></i></a>
+                                                        <!-- <a class="badge bg-secondary-light mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send Notification" href="?page=onesignal_send&book_id=<?= $data['id'] ?>" ><i class="las la-bell"></i></a> -->
+                                                        <a class="badge bg-primary-light mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="?page=order_create&id=<?= $data['id'] ?>" ><i class="las la-edit"></i></a>
+                                                        <!-- <a class="badge bg-danger-light mr-2" data-toggle="modal" data-target="#exampleModal<?= $data['id'] ?>" data-placement="top" title="" data-original-title="Delete" href="#"><i class="las la-trash-alt"></i></a> -->
                                                     </div>
                                                 </td>
                                                 <!-- Modal -->
