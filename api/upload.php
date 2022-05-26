@@ -4,7 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 
 $response = array();
-$upload_dir = '../upload/';
+$upload_dir = '../upload/payment/';
 $server_url = 'http://localhost/ibook-cambodia-2';
 
 if(isset($_FILES['avatar']))
@@ -30,7 +30,7 @@ if(isset($_FILES['avatar']))
                 "status" => "success",
                 "error" => false,
                 "message" => "File uploaded successfully",
-                "url" => $server_url."/".$upload_name
+                "url" => $upload_name
               );
         }else
         {
