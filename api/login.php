@@ -54,8 +54,16 @@ use \Firebase\JWT\JWT;
         $jwt = JWT::encode($token, $key,'HS256');
         echo json_encode(
                 array(
+                    "status" => "success",
                     "message" => "Successful login.",
-                    "jwt" => $jwt
+                    "user"=> array(
+                        "id" => $user->id,
+                        "firstname" => $user->firstname,
+                        "lastname" => $user->lastname,
+                        "email" => $user->email,
+                        "password"=> $user->password,
+                        "token"=>$jwt
+                    )
                 )
             );
     

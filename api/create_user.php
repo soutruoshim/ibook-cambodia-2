@@ -31,6 +31,7 @@ if(!$email_exists){
      // create the user
     if(
         !empty($user->firstname) &&
+        !empty($user->lastname) &&
         !empty($user->email) &&
         !empty($user->password) &&
         $user->create()
@@ -40,20 +41,23 @@ if(!$email_exists){
         http_response_code(200);
     
         // display message: user was created
-        echo json_encode(array("message" => "User was created."));
+        echo json_encode(array(
+            "status" => "success",
+            "message" => "User was created."
+        ));
     }else{
         // message if unable to create user
         // set response code
         http_response_code(400);
     
         // display message: unable to create user
-        echo json_encode(array("message" => "Unable to create user."));
+        echo json_encode(array( "status" => "fail","message" => "Unable to create user."));
     }
 }else{
      // set response code
      http_response_code(200);
     
      // display message: user was created
-     echo json_encode(array("message" => "User existed."));
+     echo json_encode(array( "status" => "fail","message" => "User existed."));
 }
 ?>
