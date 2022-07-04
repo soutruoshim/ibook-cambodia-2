@@ -90,4 +90,36 @@ Class User extends Database {
         $query = "SELECT * FROM $this->table WHERE `id` = '".$id."'";
         return $this->mightyFetchArray($this->mightyQuery($query));
     }
+
+    function mightyGetRecord()
+    {
+
+        $result = $this->mightyQuery("SELECT * FROM $this->table WHERE `user_type` = 'user'");
+
+        $records = [];
+        while($row = $this->mightyFetchArray($result))
+        {
+            $row['id'] = $row['id'];
+            $row['firstname'] = $row['first_name'];
+            $row['lastname'] = $row['last_name'];
+            $row['email'] = $row['email'];
+            $records[] = $row;
+        }
+        return $records;
+    }
+    function mightyDelete()
+    {
+
+        $query = "DELETE FROM $this->table WHERE `id` = '".$this->id."' ";
+
+        $message = 'User has been deleted.';
+        try {
+            $this->mightyQuery($query);
+            $_SESSION['success'] = $message;
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Failed";
+        }
+        echo '<script> location.href = "index.php?page=customer"; </script>';
+        die;
+    }
 }
