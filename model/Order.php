@@ -20,6 +20,7 @@ class Order{
     public function __construct($db){
         $this->conn = $db;
     }
+    
     // read orders
     function read(){
     
@@ -196,6 +197,48 @@ class Order{
         return $row;
         
     }
+
+    //==============check book status
+    function checkOrder(){
+    
+        // query to read single record
+       
+        $query = "SELECT
+                    *
+                FROM
+                    " . $this->table_name . "
+                WHERE
+                    user_id=:user_id AND book_id=:book_id
+                LIMIT
+                    0,1";
+
+       
+        // prepare query statement
+        $stmt = $this->conn->prepare( $query );
+    
+        // bind id of order to be updated
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->bindParam(":book_id", $this->book_id);
+      
+        // execute query
+        $stmt->execute();
+        //var_dump($stmt);
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // set values to object properties
+        //var_dump($row);
+
+        $this->user_id= $row['user_id'];
+        $this->book_id= $row['book_id'];
+        $this->price= $row['price'];
+        $this->amount= $row['amount'];
+        $this->payment_status= $row['payment_status'];
+        $this->paid_document= $row['paid_document'];
+        $this->create_dt= $row['create_dt'];
+    }
+
+
     // update the order
     function update(){
     
