@@ -290,7 +290,7 @@ class Order{
         $query = "UPDATE
                     " . $this->table_name . "
                 SET
-                    status = :status
+                    status = :status, payment_status = :payment_status
                 WHERE
                     id = :id";
     
@@ -299,10 +299,13 @@ class Order{
     
         // sanitize
         $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->payment_status=htmlspecialchars(strip_tags($this->payment_status));
+        
         $this->id=htmlspecialchars(strip_tags($this->id));
     
         // bind new values
         $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':payment_status', $this->payment_status);
         $stmt->bindParam(':id', $this->id);
         // execute the query
         if($stmt->execute()){

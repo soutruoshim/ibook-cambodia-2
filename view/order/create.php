@@ -17,6 +17,7 @@
     //var_dump($row);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $order->status = $_POST['status'];
+        $order->payment_status = 'paid';
         $order->updateStatus();
     }
 
